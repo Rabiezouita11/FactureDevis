@@ -16,9 +16,6 @@ class PdfController extends Controller
        
 
         // Generate PDF
-        $pdf = PDF::loadView('pdf.invoice');
-
-        // Save, download, or display the PDF
-        return $pdf->download('rabie.pdf');
+        return view('pdf.invoice');
     }
 }
