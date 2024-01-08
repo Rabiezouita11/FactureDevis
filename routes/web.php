@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CategorieController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +22,7 @@ Route::get('/', function () {
 });
 Route::get('/generate-pdf', [PdfController::class, 'generatePDF'])->name('generate.pdf');
 Route::get('/home', [HomeController::class, 'index'])->name('index');
+Route::get('/Categorie', [CategorieController::class, 'index'])->name('Categorie');
+Route::post('/add-category', [CategorieController::class, 'addCategory'])->name('add.category');
+Route::delete('/categories/delete/{id}', [CategorieController::class, 'delete'])->name('delete.category');
+
