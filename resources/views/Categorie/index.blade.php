@@ -94,9 +94,11 @@
                 </td>
                 <td class="px-5 py-3 border-b border-gray-300">
                     <!-- Update Icon -->
-                    <a href="#" class="text-blue-500 hover:text-blue-700 mr-2">
-                        <i class="fas fa-pencil-alt"></i>
-                    </a>
+
+                    <a href="#" class="text-green-500 hover:text-green-700 edit-category-btn" data-toggle="modal" data-target="#editCategoryModal" data-category-id="{{ $category->id }}" data-category-name="{{ $category->Nom }}">
+                    <i class="fas fa-pencil-alt"></i>
+</a>
+
                     <!-- Delete Icon -->
                     <a href="#" class="text-red-500 hover:text-red-700 delete-category-btn" data-toggle="modal" data-target="#deleteCategoryModal" data-category-id="{{ $category->id }}" data-category-name="{{ $category->Nom }}">
     <i class="fas fa-trash"></i>
@@ -105,7 +107,7 @@
             </tr>
         @empty
             <tr>
-                <td colspan="3" class="text-center py-4 text-gray-500 dark:text-gray-400 border-b border-gray-300">
+                <td colspan="4" class="text-center py-4 text-gray-500 dark:text-gray-400 border-b border-gray-300">
                     Aucune catégorie trouvée.
                 </td>
             </tr>
@@ -170,7 +172,7 @@
                 </button>
             </div>
             <div class="modal-body">
-    Êtes-vous sûr de vouloir supprimer la catégorie "{{ $category->Nom }}" ?
+    Êtes-vous sûr de vouloir supprimer la catégorie  ?
 </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
@@ -185,6 +187,35 @@
         </div>
     </div>
 </div>
+<!-- Edit Modal -->
+<div class="modal fade" id="editCategoryModal" tabindex="-1" role="dialog" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editCategoryModalLabel">Modifier Catégorie</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Form for category update -->
+                <form id="editCategoryForm" action="{{ route('update.category', ':id') }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="form-group">
+                        <label for="editCategoryName">Nouveau nom de la catégorie:</label>
+                        <input type="text" class="form-control @error('editCategoryName') is-invalid @enderror" id="editCategoryName" name="editCategoryName" required>
+                        @error('editCategoryName')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 <!-- JavaScript to update modal body -->
@@ -201,6 +232,25 @@
 
             // Update modal body
             $('#deleteCategoryModal .modal-body').html('Êtes-vous sûr de vouloir supprimer la catégorie "' + categoryName + '" ?');
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        // Handle click on edit icon
+        $('.edit-category-btn').on('click', function () {
+            var categoryId = $(this).data('category-id');
+            var categoryName = $(this).data('category-name');
+            var editUrl = "{{ route('update.category', ':id') }}".replace(':id', categoryId);
+            
+            // Update form action
+            $('#editCategoryForm').attr('action', editUrl);
+
+            // Populate the input field with the current category name
+            $('#editCategoryName').val(categoryName);
+
+            // Show the modal
+            $('#editCategoryModal').modal('show');
         });
     });
 </script>

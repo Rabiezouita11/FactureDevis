@@ -75,6 +75,18 @@
                 </ul>
               </div>
             </li>
+            <li>
+    <a href="{{ route('Categorie') }}"                 class="dropdown-toggle flex w-full items-center border-b border-gray-800 py-2 px-3 font-medium md:border-0 md:p-0"
+>
+         Categories
+    </a>
+</li>
+         <li>
+    <a href="{{ route('products') }}"                 class="dropdown-toggle flex w-full items-center border-b border-gray-800 py-2 px-3 font-medium md:border-0 md:p-0"
+>
+         Produit
+    </a>
+</li>
             <li class="dropdown">
               <button
                 id="navAppsLink"
@@ -589,7 +601,8 @@
             <!-- end Footer -->
           </div>
         </div>
-    
+        </div><!--end container-->
+
     <script src="assets/libs/simplebar/simplebar.min.js"></script>
     <script src="assets/js/app.js"></script>
 </body>
