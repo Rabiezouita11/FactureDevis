@@ -21,4 +21,8 @@ class Product extends Model
     {
         return $this->belongsTo(Categorie::class);
     }
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_products')->withPivot('facture_id');
+    }
 }

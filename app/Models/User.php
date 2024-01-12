@@ -46,4 +46,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Factures::class);
     }
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'user_products')->withPivot('facture_id');
+    }
 }

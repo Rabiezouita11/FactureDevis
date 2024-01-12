@@ -133,14 +133,21 @@
     <i class="far fa-eye"></i>
     </a>
                     <!-- Update Icon -->
-                    <a href="#" class="text-green-500 hover:text-green-700 edit-category-btn" data-toggle="modal" data-target="#editCategoryModal" data-category-id="{{ $Produit->id }}" data-category-name="{{ $Produit->Nom }}">
-                        <i class="fas fa-pencil-alt"></i>
-                    </a>
+                    <a href="#" class="text-green-500 hover:text-green-700 edit-product-btn" 
+   data-toggle="modal" data-target="#editProductModal" 
+   data-product-id="{{ $Produit->id }}" 
+   data-product-name="{{ $Produit->Nom }}" 
+   data-product-description="{{ $Produit->Description }}" 
+   data-product-quantity="{{ $Produit->quantite }}" 
+   data-product-price="{{ $Produit->Prix }}" 
+   data-product-category="{{ $Produit->category->id }}">
+   <i class="fas fa-pencil-alt"></i>
+</a>
 
                     <!-- Delete Icon -->
-                    <a href="#" class="text-red-500 hover:text-red-700 delete-category-btn" data-toggle="modal" data-target="#deleteCategoryModal" data-category-id="{{ $Produit->id }}" data-category-name="{{ $Produit->Nom }}">
-                        <i class="fas fa-trash"></i>
-                    </a>
+                    <a href="#" class="text-red-500 hover:text-red-700 delete-product-btn" data-toggle="modal" data-target="#deleteProductModal" data-product-id="{{ $Produit->id }}" data-product-name="{{ $Produit->Nom }}">
+    <i class="fas fa-trash"></i>
+</a>
                 </td>
             </tr>
         @empty
@@ -235,60 +242,8 @@
     </div>
 </div>
 
-<!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteCategoryModal" tabindex="-1" role="dialog" aria-labelledby="deleteCategoryModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteCategoryModalLabel">Confirmation de suppression</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-    Êtes-vous sûr de vouloir supprimer la catégorie  ?
-</div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
 
-                <!-- Add a form for deletion -->
-                <form id="deleteCategoryForm" action="{{ route('delete.category', ':id') }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Supprimer</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Edit Modal -->
-<div class="modal fade" id="editCategoryModal" tabindex="-1" role="dialog" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editCategoryModalLabel">Modifier Catégorie</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- Form for category update -->
-                <form id="editCategoryForm" action="{{ route('update.category', ':id') }}" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <div class="form-group">
-                        <label for="editCategoryName">Nouveau nom de la catégorie:</label>
-                        <input type="text" class="form-control @error('editCategoryName') is-invalid @enderror" id="editCategoryName" name="editCategoryName" required>
-                        @error('editCategoryName')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+<!-- Show description -->
 <div class="modal fade" id="showDescriptionModal" tabindex="-1" role="dialog" aria-labelledby="showDescriptionModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -307,43 +262,111 @@
     </div>
 </div>
 
+<!-- Edit Product Modal -->
+<div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="editProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProductModalLabel">Modifier Produit</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Form for editing product -->
+                <form id="editProductForm" action="{{ route('update.product') }}" method="POST">
+                    @csrf
+                    @method('PUT') <!-- Use the PUT method for update -->
+                    <input type="hidden" name="productId" id="editProductId" value="">
+
+                    <div class="form-group">
+                        <label for="editProductName">Nom du produit:</label>
+                        <input type="text" class="form-control" id="editProductName" name="editProductName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editProductDescription">Description du produit:</label>
+                        <textarea class="form-control" id="editProductDescription" name="editProductDescription" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editProductQuantity">Quantité:</label>
+                        <input type="number" class="form-control" id="editProductQuantity" name="editProductQuantity" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editProductPrice">Prix:</label>
+                        <input type="number" class="form-control" id="editProductPrice" name="editProductPrice" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editProductCategory">Catégorie:</label>
+                        <select class="form-control" id="editProductCategory" name="editProductCategory" required>
+                            <!-- You may populate the dropdown options with category data -->
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->Nom }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                   
+
+                    <button type="submit" class="btn btn-primary">Modifier</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteProductModal" tabindex="-1" role="dialog" aria-labelledby="deleteProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteProductModalLabel">Confirmation de suppression</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteProductName"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <form id="deleteProductForm" action="{{ route('delete.product') }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <input type="hidden" name="productId" id="deleteProductId" value="">
+                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <!-- JavaScript to update modal body -->
+
 <script>
     $(document).ready(function () {
-        // Handle click on delete icon
-        $('.delete-category-btn').on('click', function () {
-            var categoryId = $(this).data('category-id');
-            var categoryName = $(this).data('category-name');
-            var deleteUrl = "{{ route('delete.category', ':id') }}".replace(':id', categoryId);
-            
-            // Update form action
-            $('#deleteCategoryForm').attr('action', deleteUrl);
+        // Handle click on delete icon for products
+        $('.delete-product-btn').on('click', function () {
+            var productId = $(this).data('product-id');
+            var productName = $(this).data('product-name');
 
-            // Update modal body
-            $('#deleteCategoryModal .modal-body').html('Êtes-vous sûr de vouloir supprimer la catégorie "' + categoryName + '" ?');
+            // Populate the delete modal fields with product details
+            $('#deleteProductId').val(productId);
+            $('#deleteProductName').text('Vous êtes sur le point de supprimer le produit "' + productName + '". ');
+
+            // Show the delete modal
+            $('#deleteProductModal').modal('show');
         });
     });
 </script>
-<script>
-    $(document).ready(function () {
-        // Handle click on edit icon
-        $('.edit-category-btn').on('click', function () {
-            var categoryId = $(this).data('category-id');
-            var categoryName = $(this).data('category-name');
-            var editUrl = "{{ route('update.category', ':id') }}".replace(':id', categoryId);
-            
-            // Update form action
-            $('#editCategoryForm').attr('action', editUrl);
 
-            // Populate the input field with the current category name
-            $('#editCategoryName').val(categoryName);
 
-            // Show the modal
-            $('#editCategoryModal').modal('show');
-        });
-    });
-</script>
 <script>
     $(document).ready(function () {
         // Handle click on eye icon
@@ -359,6 +382,29 @@
             $('#showDescriptionModal').modal('show');
         });
     });
+</script>
+<script>
+    $(document).ready(function () {
+    // Handle click on edit icon for products
+    $('.edit-product-btn').on('click', function () {
+        var productId = $(this).data('product-id');
+        var productName = $(this).data('product-name');
+        var productDescription = $(this).data('product-description');
+        var productQuantity = $(this).data('product-quantity');
+        var productPrice = $(this).data('product-price');
+        var productCategory = $(this).data('product-category');
+
+        // Populate the edit modal fields with product details
+        $('#editProductId').val(productId);
+        $('#editProductName').val(productName);
+        $('#editProductDescription').val(productDescription);
+        $('#editProductQuantity').val(productQuantity);
+        $('#editProductPrice').val(productPrice);
+        $('#editProductCategory').val(productCategory);
+        // Show the edit modal
+        $('#editProductModal').modal('show');
+    });
+});
 </script>
 
 @endsection

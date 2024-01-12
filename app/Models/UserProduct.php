@@ -5,21 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Factures extends Model
+class UserProduct extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'NomSoicety', 'adresse', 'email', 'Btscasbella', 'RipAmanBank', 'RipBts', 'Mf', 'telephone', 'user_id'
+        'user_id',
+        'product_id',
+        'facture_id',
     ];
-
-   
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function products()
+    public function product()
     {
-        return $this->hasManyThrough(Product::class, UserProduct::class);
+        return $this->belongsTo(Product::class);
     }
+
+    public function facture()
+    {
+        return $this->belongsTo(Factures::class);
+    }   
 }
