@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('RipBts')->default('27000000000130284020');
             $table->string('Mf')->default('1212517/L/B/M/000');
             $table->string('telephone')->default('+21625225712');
+            $table->decimal('prix_hors_taxe', 10, 2)->nullable();
+            $table->decimal('prix_avec_taxe', 10, 2)->nullable();
             $table->timestamps();
         });
     }

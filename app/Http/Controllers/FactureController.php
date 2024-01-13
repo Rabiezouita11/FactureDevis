@@ -11,6 +11,9 @@ class FactureController extends Controller
 {
     public function saveUserProductsFacture(Request $request)
     {
+        // Define the tax rate
+        $taxRate = 0.19;
+    
         // Validate the request data (add more validation rules as needed)
         $request->validate([
             'name' => 'required|string|max:255',
@@ -37,25 +40,41 @@ class FactureController extends Controller
             'details' => 'Test Facture Details', // You can customize this as needed
         ]);
     
+        // Initialize total prices
+        $totalHorsTaxe = 0; // Total price without tax
+        $totalAvecTaxe = 0; // Total price with tax
+    
         // Calculate total price for each product and attach to the user with additional pivot data
         foreach ($selectedProducts as $key => $productId) {
             $product = Product::find($productId);
             $quantity = $quantities[$key];
-            $totalPrice = $product->Prix * $quantity;
+            $totalHorsTaxe += $product->Prix * $quantity;
     
+            // Calculate total price with tax
+            $totalAvecTaxe += ($product->Prix * (1 + $taxRate)) * $quantity;
+    
+            // Attach the product to the user with facture_id
             $user->products()->attach(
                 $productId,
                 [
                     'facture_id' => $facture->id,
                     'quantite' => $quantity,
-                    'prix_totale' => $totalPrice,
+                    'prix_totale' => $product->Prix * $quantity,
                 ]
             );
         }
     
+        // Update the facture with total prices
+        $facture->update([
+            'prix_hors_taxe' => $totalHorsTaxe,
+            'prix_avec_taxe' => $totalAvecTaxe,
+        ]);
+    
         // Return a success response
         return response()->json(['message' => 'User, products, and facture saved successfully']);
     }
+    
+    
     
     public function showUserProductsForm()
     {
