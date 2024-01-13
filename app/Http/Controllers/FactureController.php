@@ -16,6 +16,7 @@ class FactureController extends Controller
     public function showAllFacturesWithUsers()
     {
         // Fetch all factures with associated users and paginate the results
+        $products = Product::all();
         $factures = DB::table('factures')
             ->join('users', 'factures.user_id', '=', 'users.id')
             ->select('factures.*', 'users.name as user_name', 'users.email as user_email')
@@ -27,7 +28,7 @@ class FactureController extends Controller
             return $facture;
         });
     
-        return view('Facture.index2', ['factures' => $factures]);
+        return view('Facture.index2', ['factures' => $factures, 'products' => $products]);
     }
     
 
