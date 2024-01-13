@@ -6,9 +6,32 @@ use App\Models\Product;
 use App\Models\Factures;
 use App\Models\UserProduct;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB; // Import the DB facade
+use Carbon\Carbon;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class FactureController extends Controller
 {
+
+    public function showAllFacturesWithUsers()
+    {
+        // Fetch all factures with associated users and paginate the results
+        $factures = DB::table('factures')
+            ->join('users', 'factures.user_id', '=', 'users.id')
+            ->select('factures.*', 'users.name as user_name', 'users.email as user_email')
+            ->paginate(5); // Adjust the number based on your needs
+    
+        // Convert created_at from string to Carbon instance
+        $factures->getCollection()->transform(function ($facture) {
+            $facture->created_at = Carbon::parse($facture->created_at);
+            return $facture;
+        });
+    
+        return view('Facture.index2', ['factures' => $factures]);
+    }
+    
+
+
     public function saveUserProductsFacture(Request $request)
     {
         // Define the tax rate

@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 // facture 
 Route::post('/saveUserProductsFacture', [FactureController::class, 'saveUserProductsFacture'])->name('saveUserProductsFacture');
-Route::get('/Facture', [FactureController::class, 'showUserProductsForm']);
+Route::get('/Facture', [FactureController::class, 'showAllFacturesWithUsers']);
 
 
 

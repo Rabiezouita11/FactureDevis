@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyO/dCPR70mIaa2M/6uJf51uoG28JOMhS" crossorigin="anonymous">
     <!-- Include your other CSS stylesheets here -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
 </head>
 <body>
 
@@ -33,20 +35,22 @@
         </div>
 
         <!-- Product Selection -->
-        <div class="form-group" id="productFieldsContainer">
-            <label for="products">Select Products:</label>
-            <div class="product-field">
-                <select class="form-control" name="products[]" required>
-                    @foreach($products as $product)
-                        <option value="{{ $product->id }}" data-price="{{ $product->price }}">{{ $product->Nom }}</option>
-                    @endforeach
-                </select>
-                <input type="number" class="form-control" name="quantities[]" placeholder="Quantity" required>
-            </div>
-        </div>
+    <!-- Product Selection -->
+<div class="form-group" id="productFieldsContainer">
+    <label for="products">Select Products:</label>
+    <div class="product-field">
+        <select class="form-control js-select2" name="products[]" required>
+            @foreach($products as $product)
+                <option value="{{ $product->id }}" data-price="{{ $product->price }}">{{ $product->Nom }}</option>
+            @endforeach
+        </select>
+        <input type="number" class="form-control" name="quantities[]" placeholder="Quantity" required>
+    </div>
+</div>
+
 
         <!-- Additional User and Facture Information -->
-        <!-- Add more fields as needed -->
+        <!-- Add more fields as needed -->  
 
         <button type="button" class="btn btn-primary" id="addProductBtn">Add Product +</button>
         <button type="submit" class="btn btn-primary">Submit</button>
@@ -57,38 +61,44 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-VEgISOnbUir7bYcUL2xiGqc/5cwL5A/S9HxMHAvqVM+AYPFb9d6U9j5ksgpFtnT8" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyO/dCPR70mIaa2M/6uJf51uoG28JOMhS" crossorigin="anonymous"></script>
 
-    <script>
-        $(document).ready(function () {
-            var productCounter = 1;
-            var selectedProducts = [];
+   
 
-            // Event listener for the "Add Product" button
-            $('#addProductBtn').click(function () {
-                addProductField();
-            });
+<script>
+    $(document).ready(function () {
+        $('.js-select2').select2();
 
-            // Function to add product fields
-            function addProductField() {
-                var productFieldHtml = `
-                    <div class="form-group">
-                        <label for="product${productCounter}">Select Product:</label>
-                        <select class="form-control" name="products[]" required>
-                            @foreach($products as $product)
-                                <option value="{{ $product->id }}" data-price="{{ $product->price }}">{{ $product->Nom }}</option>
-                            @endforeach
-                        </select>
-                        <input type="number" class="form-control" name="quantities[]" placeholder="Quantity" required>
-                    </div>
-                `;
+        var productCounter = 1;
 
-                // Append the product field to the container
-                $('#productFieldsContainer').append(productFieldHtml);
+        // Event listener for the "Add Product" button
+        $('#addProductBtn').click(function () {
+            addProductField();
+        });
 
-                productCounter++;
-            }
+        // Function to add product fields
+        function addProductField() {
+            var productFieldHtml = `
+                <div class="form-group">
+                    <label for="product${productCounter}">Select Product:</label>
+                    <select class="form-control js-select2" name="products[]" required>
+                        @foreach($products as $product)
+                            <option value="{{ $product->id }}" data-price="{{ $product->price }}">{{ $product->Nom }}</option>
+                        @endforeach
+                    </select>
+                    <input type="number" class="form-control" name="quantities[]" placeholder="Quantity" required>
+                </div>
+            `;
 
-            // Event listener for form submission
-            $('form').submit(function () {
+            // Append the product field to the container
+            $('#productFieldsContainer').append(productFieldHtml);
+
+            // Initialize Select2 for the new field
+            $('.js-select2').select2();
+
+            productCounter++;
+        }
+
+        // Event listener for form submission
+        $('form').submit(function () {
                 var selectedProductOptions = $('select[name="products[]"] option:selected');
 
                 // Check for duplicate selections
@@ -101,9 +111,11 @@
                     }
                 });
             });
-        });
-    </script>
+    });
+</script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <!-- Include your other JavaScript scripts here -->
 
 </body>
