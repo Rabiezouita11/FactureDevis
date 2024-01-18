@@ -95,7 +95,7 @@ class FactureController extends Controller
         ]);
     
         // Return a success response
-        return response()->json(['message' => 'User, products, and facture saved successfully']);
+        return redirect()->route('Facture')->with('success', 'Facture ajoutée avec succès');
     }
     
     

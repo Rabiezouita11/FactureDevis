@@ -1,22 +1,20 @@
 @extends('layouts.index')
 @section('content')
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyO/dCPR70mIaa2M/6uJf51uoG28JOMhS" crossorigin="anonymous">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" >
     <!-- Include Select2 CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <!-- Include your other CSS stylesheets here -->
 
     <!-- Include jQuery and Select2 JS -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <!-- Include Bootstrap JS and other JavaScript scripts here -->
 
-
-
-
+<!-- Include Select2 JavaScript and CSS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    
+   
 <script>
     // Display modal if there are validation errors
     @if($errors->any())
@@ -141,7 +139,7 @@
             </tr>
         @empty
             <tr>
-                <td colspan="4" class="text-center py-4 text-gray-500 dark:text-gray-400 border-b border-gray-300">
+                <td colspan="8" class="text-center py-4 text-gray-500 dark:text-gray-400 border-b border-gray-300">
                 <p>Aucune facture trouvée.</p>
                 </td>
             </tr>
@@ -170,6 +168,10 @@
     
     </div><!--end container-->
 <!-- Add Facture Modal -->
+<!-- ... (previous HTML code) ... -->
+
+<!-- ... (previous HTML code) ... -->
+
 <div class="modal fade" id="addFactureModal" tabindex="-1" role="dialog" aria-labelledby="addFactureModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -180,14 +182,118 @@
                 </button>
             </div>
             <div class="modal-body">
-                @include('Facture.index')
+                <!-- Form for adding user and products -->
+                <h2 class="mb-4">Ajouter Facture</h2>
+              
+                <form action="{{ route('saveUserProductsFacture') }}" method="POST">
+                    @csrf
+                    <!-- User Information -->
+                    <div class="form-group">
+        <label for="name">Nom du client :</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Entrez le nom" required>
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email du client :</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="Entrez l'email" required>
+    </div>
+
+                    <!-- Product Selection -->
+                    <div class="form-group" id="productFieldsContainer">
+        <label for="products">Sélectionnez les produits :</label>
+        <div class="input-group mb-3">
+            <select class="form-control js-select2" name="products[]" required>
+                @foreach($products as $product)
+                    <option value="{{ $product->id }}" data-price="{{ $product->price }}">{{ $product->Nom }}</option>
+                @endforeach
+            </select>
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="addProductBtn">Ajouter Produit +</button>
+            </div>
+        </div>
+        <input type="number" class="form-control" name="quantities[]" placeholder="Quantité" required>
+    </div>
+                    <!-- Additional User and Facture Information -->
+                    <!-- Add more fields as needed -->
+
+                    <button type="submit" class="btn btn-primary">Soumettre</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
+
+<!-- Include jQuery before Select2 -->
+
+
+<!-- ... (remaining HTML code) ... -->
+
+
+<!-- ... (remaining HTML code) ... -->
+
+
+<script>
+    $(document).ready(function () {
+        $('.js-select2').select2();
+
+        var productCounter = 1;
+        var selectedProducts = [];
+
+        // Event listener for the "Add Product" button
+        $('#addProductBtn').click(function () {
+            addProductField();
+        });
+
+        // Event listener for the "Remove Product" button
+        $('#productFieldsContainer').on('click', '.removeProductBtn', function () {
+            $(this).closest('.form-group').remove();
+        });
+
+        // Function to add product fields
+        function addProductField() {
+            var productFieldHtml = `
+                <div class="form-group">
+                    <label for="product${productCounter}">Select Product:</label>
+                    <div class="input-group mb-3">
+                        <select class="form-control js-select2" name="products[]" required>
+                            @foreach($products as $product)
+                                <option value="{{ $product->id }}" data-price="{{ $product->price }}">{{ $product->Nom }}</option>
+                            @endforeach
+                        </select>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-danger removeProductBtn" type="button">Remove Product -</button>
+                        </div>
+                    </div>
+                    <input type="number" class="form-control" name="quantities[]" placeholder="Quantity" required>
+                </div>
+            `;
+
+            // Append the product field to the container
+            $('#productFieldsContainer').append(productFieldHtml);
+
+            // Initialize Select2 for the new field
+            $('.js-select2').select2();
+
+            productCounter++;
+        }
+
+        // Event listener for form submission
+        $('form').submit(function () {
+            var selectedProductOptions = $('select[name="products[]"] option:selected');
+
+            // Check for duplicate selections
+            selectedProductOptions.each(function () {
+                var productId = $(this).val();
+                if (selectedProducts.includes(productId)) {
+                    alert('Product ' + $(this).text() + ' is already selected.');
+                } else {
+                    selectedProducts.push(productId);
+                }
+            });
+        });
+    });
+</script>
 
 @endsection
 

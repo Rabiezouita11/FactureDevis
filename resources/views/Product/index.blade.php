@@ -5,6 +5,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
 
@@ -52,7 +55,24 @@
   </div>
   @endif
 </center>
-    <div class="container mx-auto px-2 min-h-[calc(100vh-138px)]  relative pb-14 ">         
+<style>
+    /* Style for the search container */
+    .search-container {
+        max-width: 300px; /* Adjust the maximum width as needed */
+        margin: 0 auto; /* Center the container horizontally */
+    }
+
+    /* Style for the search input */
+    #searchInput {
+        width: 100%; /* Take up the full width of the container */
+        padding: 10px; /* Add padding for better visual appeal */
+        border: 1px solid #ccc; /* Add a border to the input */
+        border-radius: 5px; /* Add some border-radius for rounded corners */
+        box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    }
+</style>
+
+<div class="container mx-auto px-2 min-h-[calc(100vh-138px)]  relative pb-14 ">         
         <div class="grid md:grid-cols-12 lg:grid-cols-12 xl:grid-cols-12 gap-4 mb-4">
           
             <div class="sm:col-span-12  md:col-span-12 lg:col-span-6 xl:col-span-12 ">
@@ -63,7 +83,12 @@
                     <div class="card-body">
                         <!-- component -->
                         <div class="relative overflow-x-auto  sm:rounded">
-<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border border-collapse border-gray-300">
+<!-- Wrap the search input in a container for better styling -->
+<div class="search-container mb-4">
+    <input type="text" id="searchInput" placeholder="Search products" class="form-control">
+</div>
+
+<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border border-collapse border-gray-300"  id="productTable">
     <thead class="bg-white border-b border-gray-300">
         <tr>
             <th scope="col" class="px-6 py-4 text-lg font-semibold border-r border-gray-300">
@@ -79,6 +104,9 @@
                 Prix
             </th>
             <th scope="col" class="px-6 py-4 text-lg font-semibold border-r border-gray-300">
+    Image
+</th>
+            <th scope="col" class="px-6 py-4 text-lg font-semibold border-r border-gray-300">
                 Catégorie
             </th>
             <th scope="col" class="px-6 py-4 text-lg font-semibold border-r border-gray-300">
@@ -91,7 +119,7 @@
     </thead>
     <tbody class="bg-gray-200">
         @forelse($products as $Produit)
-            <tr class="bg-white dark:bg-slate-900/95">
+ <tr class="bg-white dark:bg-slate-900/95">
             <td class="px-6 py-4 text-lg font-semibold border-r border-gray-300">
     {{ $Produit->id }}
 </td>
@@ -112,6 +140,16 @@
         {{ $Produit->Prix }} TND
     </span>
 </td>
+<td class="px-6 py-4 text-lg border-r border-gray-300">
+    @if ($Produit->image)
+        <div class="flex items-center">
+            <img src="{{ asset('storage/' . $Produit->image) }}" alt="{{ $Produit->Nom }}" class="w-14 h-14 rounded-full object-cover">
+        </div>
+    @else
+        No Image
+    @endif
+</td>
+
 
 <td class="px-6 py-4 text-lg border-r border-gray-300">
     <span class="flex items-center">
@@ -129,9 +167,10 @@
 
 
                 <td class="px-6 py-4">
-                <a href="#" class="text-blue-500 hover:text-blue-700 show-description-btn" data-toggle="modal" data-target="#showDescriptionModal" data-product-description="{{ $Produit->Description }}" data-product-name="{{ $Produit->Nom }}">
+                <a href="#" class="text-blue-500 hover:text-blue-700 show-description-btn" data-toggle="modal" data-target="#showDescriptionModal" data-product-description="{{ $Produit->Description }}" data-product-name="{{ $Produit->Nom }}" data-product-image="{{ asset('storage/' . $Produit->image) }}">
     <i class="far fa-eye"></i>
-    </a>
+</a>
+    
                     <!-- Update Icon -->
                     <a href="#" class="text-green-500 hover:text-green-700 edit-product-btn" 
    data-toggle="modal" data-target="#editProductModal" 
@@ -152,7 +191,7 @@
             </tr>
         @empty
             <tr>
-                <td colspan="7" class="text-center py-4 text-gray-500 dark:text-gray-400 border-b border-gray-300">
+                <td colspan="8" class="text-center py-4 text-gray-500 dark:text-gray-400 border-b border-gray-300">
                     Aucun produit trouvé.
                 </td>
             </tr>
@@ -193,7 +232,7 @@
             </div>
             <div class="modal-body">
                 <!-- Form for product input -->
-                <form id="addProductForm" action="{{ route('add.product') }}" method="POST">
+                <form id="addProductForm" action="{{ route('add.product') }}" method="POST"  enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label for="productName">Nom du produit:</label>
@@ -223,6 +262,13 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="form-group">
+        <label for="productImage">Image:</label>
+        <input type="file" class="form-control" id="productImage" name="productImage">
+          @error('productImage')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+    </div>
                     <div class="form-group">
                         <label for="productCategory">Catégorie:</label>
                         <select class="form-control @error('productCategory') is-invalid @enderror" id="productCategory" name="productCategory" required>
@@ -255,6 +301,8 @@
                 </button>
             </div>
             <div class="modal-body">
+            <img src="" alt="Product Image" id="productImage" class="w-full h-auto mb-4">
+
                 <!-- Display the product description here -->
                 <p id="productDescription"></p>
             </div>
@@ -274,7 +322,7 @@
             </div>
             <div class="modal-body">
                 <!-- Form for editing product -->
-                <form id="editProductForm" action="{{ route('update.product') }}" method="POST">
+                <form id="editProductForm" action="{{ route('update.product') }}" method="POST"  enctype="multipart/form-data">
                     @csrf
                     @method('PUT') <!-- Use the PUT method for update -->
                     <input type="hidden" name="productId" id="editProductId" value="">
@@ -298,6 +346,17 @@
                         <label for="editProductPrice">Prix:</label>
                         <input type="number" class="form-control" id="editProductPrice" name="editProductPrice" required>
                     </div>
+                    <div class="form-group">
+                        <label for="currentProductImage">Image actuelle:</label>
+                        <br>
+                      <center>
+                      <img src="{{ asset('storage/' . $Produit->image) }}" alt="{{ $Produit->Nom }}" style="width: 150px; height: 150px;" class="rounded-full object-cover">
+                      </center> 
+                    </div>
+                    <div class="form-group">
+    <label for="editProductImage">Image:</label>
+    <input type="file" class="form-control" id="editProductImage" name="editProductImage">
+</div>
 
                     <div class="form-group">
                         <label for="editProductCategory">Catégorie:</label>
@@ -350,20 +409,22 @@
 <!-- JavaScript to update modal body -->
 
 <script>
-    $(document).ready(function () {
-        // Handle click on delete icon for products
-        $('.delete-product-btn').on('click', function () {
-            var productId = $(this).data('product-id');
-            var productName = $(this).data('product-name');
+   $(document).ready(function () {
+    // Handle click on delete icon for products
+    // Use event delegation for dynamically added content
+    $(document).on('click', '.delete-product-btn', function () {
+        var productId = $(this).data('product-id');
+        var productName = $(this).data('product-name');
 
-            // Populate the delete modal fields with product details
-            $('#deleteProductId').val(productId);
-            $('#deleteProductName').text('Vous êtes sur le point de supprimer le produit "' + productName + '". ');
+        // Populate the delete modal fields with product details
+        $('#deleteProductId').val(productId);
+        $('#deleteProductName').text('Vous êtes sur le point de supprimer le produit "' + productName + '". ');
 
-            // Show the delete modal
-            $('#deleteProductModal').modal('show');
-        });
+        // Show the delete modal
+        $('#deleteProductModal').modal('show');
     });
+});
+
 </script>
 
 
@@ -372,39 +433,198 @@
         // Handle click on eye icon
         $('.show-description-btn').on('click', function () {
             var productDescription = $(this).data('product-description');
-            var productName = $(this).data('product-name'); // Add a data attribute with product name
-            
+            var productName = $(this).data('product-name');
+            var productImage = $(this).data('product-image');
+
             // Update modal title and body with product information
             $('#showDescriptionModal #productName').text(productName);
             $('#showDescriptionModal #productDescription').text(productDescription);
+
+            // Set the image source
+            $('#showDescriptionModal #productImage').attr('src', productImage);
 
             // Show the modal
             $('#showDescriptionModal').modal('show');
         });
     });
 </script>
+
+
 <script>
     $(document).ready(function () {
-    // Handle click on edit icon for products
-    $('.edit-product-btn').on('click', function () {
-        var productId = $(this).data('product-id');
-        var productName = $(this).data('product-name');
-        var productDescription = $(this).data('product-description');
-        var productQuantity = $(this).data('product-quantity');
-        var productPrice = $(this).data('product-price');
-        var productCategory = $(this).data('product-category');
+        // Handle click on edit icon for initially loaded products
+        $('.edit-product-btn').on('click', function () {
+            var productId = $(this).data('product-id');
+            var productName = $(this).data('product-name');
+            var productDescription = $(this).data('product-description');
+            var productQuantity = $(this).data('product-quantity');
+            var productPrice = $(this).data('product-price');
+            var productCategory = $(this).data('product-category');
 
-        // Populate the edit modal fields with product details
-        $('#editProductId').val(productId);
-        $('#editProductName').val(productName);
-        $('#editProductDescription').val(productDescription);
-        $('#editProductQuantity').val(productQuantity);
-        $('#editProductPrice').val(productPrice);
-        $('#editProductCategory').val(productCategory);
-        // Show the edit modal
-        $('#editProductModal').modal('show');
+            // Populate the edit modal fields with product details
+            $('#editProductId').val(productId);
+            $('#editProductName').val(productName);
+            $('#editProductDescription').val(productDescription);
+            $('#editProductQuantity').val(productQuantity);
+            $('#editProductPrice').val(productPrice);
+            $('#editProductCategory').val(productCategory);
+
+            // Show the edit modal
+            $('#editProductModal').modal('show');
+        });
+
+        // Handle click on edit icon for dynamically added elements (search results)
+        $(document).on('click', '.edit-product-btn', function () {
+            var productId = $(this).data('product-id');
+            var productName = $(this).data('product-name');
+            var productDescription = $(this).data('product-description');
+            var productQuantity = $(this).data('product-quantity');
+            var productPrice = $(this).data('product-price');
+            var productCategory = $(this).data('product-category');
+
+            // Populate the edit modal fields with product details
+            $('#editProductId').val(productId);
+            $('#editProductName').val(productName);
+            $('#editProductDescription').val(productDescription);
+            $('#editProductQuantity').val(productQuantity);
+            $('#editProductPrice').val(productPrice);
+            $('#editProductCategory').val(productCategory);
+
+            // Show the edit modal
+            $('#editProductModal').modal('show');
+        });
+
+        // Rest of your existing code for search functionality...
     });
+</script>
+
+
+
+  <div id="loadingSpinner" class="spinner-border text-primary" role="status" style="display: none;">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+<script>
+    $(document).ready(function () {
+        // Handle keyup event on the search input
+        $('#searchInput').on('keyup', function () {
+            var searchQuery = $(this).val();
+
+            // Show loading spinner
+            $('#loadingSpinner').show();
+
+            // Make an AJAX request to the search route
+            $.ajax({
+                url: '{{ route('search.products') }}',
+                type: 'GET',
+                data: { search: searchQuery },
+                success: function (data) {
+                    // Hide loading spinner
+                    $('#loadingSpinner').hide();
+
+                    // Update the product table or other content based on the search results
+                    updateProductTable(data.products);
+                },
+                error: function (xhr, status, error) {
+                    // Hide loading spinner in case of an error
+                    $('#loadingSpinner').hide();
+                    
+                    console.error(error);
+                }
+            });
+        });
+
+        // Function to update the product table
+        function updateProductTable(products) {
+            // Clear existing table content
+            $('#productTable tbody').empty();
+
+            // Check if there are products in the search result
+            if (products.length > 0) {
+                // Append the new products to the table
+                $.each(products, function (index, product) {
+    // Check if product category is defined
+    var categoryName = product.category ? product.category.Nom : 'N/A';
+    var datePart = product.created_at.substring(0, 10);
+
+    // Create a new row using the consistent structure
+    var row = `<tr class="product-row bg-white dark:bg-slate-900/95">
+                  <td class="px-6 py-4 text-lg font-semibold border-r border-gray-300">
+                      ${product.id}
+                  </td>
+                  <td class="px-6 py-4 text-lg border-r border-gray-300">
+                      ${product.Nom}
+                  </td>
+                  <td class="px-6 py-4 text-lg border-r border-gray-300">
+                      <span class="flex items-center">
+                          <i class="fas fa-cubes mr-2"></i>
+                          ${product.quantite}
+                      </span>
+                  </td>
+                  <td class="px-6 py-4 text-lg border-r border-gray-300">
+                      <span class="flex items-center">
+                          <i class="fas fa-money-bill-wave mr-2"></i>
+                          ${product.Prix} TND
+                      </span>
+                  </td>
+                  <td class="px-6 py-4 text-lg border-r border-gray-300">
+    <span class="flex items-center">
+        ${product.image ? `<img src="/storage/${product.image}" alt="${product.Nom}"class="w-14 h-14 rounded-full object-cover" />` : ''}
+    </span>
+</td>
+
+                  <td class="px-6 py-4 text-lg border-r border-gray-300">
+                      <span class="flex items-center">
+                          <i class="fas fa-folder mr-2"></i>
+                          ${categoryName}
+                      </span>
+                  </td>
+                  <td class="px-6 py-4 text-lg border-r border-gray-300">
+                      <span class="flex items-center">
+                          <i class="far fa-calendar-alt mr-2"></i>
+                          ${datePart}
+                      </span>
+                  </td>
+                 
+                  <td class="px-6 py-4">
+                      <div class="flex items-center">
+                          <a href="#" class="text-blue-500 hover:text-blue-700 show-description-btn" data-toggle="modal" data-target="#showDescriptionModal" data-product-description="${product.Description}" data-product-name="${product.Nom}">
+                              <i class="far fa-eye"></i>
+                          </a>
+                          <a href="#" class="text-green-500 hover:text-green-700 edit-product-btn" 
+                             data-toggle="modal" data-target="#editProductModal" 
+                             data-product-id="${product.id}" 
+                             data-product-name="${product.Nom}" 
+                             data-product-description="${product.Description}" 
+                             data-product-quantity="${product.quantite}" 
+                             data-product-price="${product.Prix}" 
+                             data-product-category="${product.category ? product.category.id : ''}">
+                             <i class="fas fa-pencil-alt"></i>
+                          </a>
+                          <a href="#" class="text-red-500 hover:text-red-700 delete-product-btn" data-toggle="modal" data-target="#deleteProductModal" data-product-id="${product.id}" data-product-name="${product.Nom}">
+                              <i class="fas fa-trash"></i>
+                          </a>
+                      </div>
+                  </td>
+              </tr>`;
+
+    // Append the new row to the table body
+    $('#productTable tbody').append(row);
 });
+
+
+            } else {
+                // Handle the case when there are no search results
+                var noResultsRow = `<tr>
+                                      <td colspan="8" class="text-center py-4 text-gray-500 dark:text-gray-400 border-b border-gray-300">
+                                          Aucun produit trouvé.
+                                      </td>
+                                  </tr>`;
+
+                // Append the "no results" row to the table body
+                $('#productTable tbody').append(noResultsRow);
+            }
+        }
+    });
 </script>
 
 @endsection

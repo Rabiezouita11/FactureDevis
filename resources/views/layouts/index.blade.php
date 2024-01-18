@@ -88,17 +88,13 @@
     </a>
 </li>
         <li>
-    <a href="{{ route('products') }}"                 class="dropdown-toggle flex w-full items-center border-b border-gray-800 py-2 px-3 font-medium md:border-0 md:p-0"
+    <a href="{{ route('Facture') }}"                 class="dropdown-toggle flex w-full items-center border-b border-gray-800 py-2 px-3 font-medium md:border-0 md:p-0"
 >
-Facturation
+Facturation/Devis 
+
     </a>
 </li>
-<li>
-    <a href="{{ route('products') }}"                 class="dropdown-toggle flex w-full items-center border-b border-gray-800 py-2 px-3 font-medium md:border-0 md:p-0"
->
-Devis 
-    </a>
-</li>
+
            
            
          

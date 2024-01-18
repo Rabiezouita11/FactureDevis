@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 // facture 
 Route::post('/saveUserProductsFacture', [FactureController::class, 'saveUserProductsFacture'])->name('saveUserProductsFacture');
-Route::get('/Facture', [FactureController::class, 'showAllFacturesWithUsers']);
+Route::get('/Facture', [FactureController::class, 'showAllFacturesWithUsers'])->name('Facture');;
 
 
 
@@ -43,6 +43,8 @@ Route::post('/products/add', [ProductController::class, 'addProduct'])->name('ad
 Route::get('/products', [ProductController::class, 'index'])->name('products');
 Route::put('/update-product', [ProductController::class, 'update'])->name('update.product');
 Route::delete('/delete-product', [ProductController::class, 'destroy'])->name('delete.product');
+Route::get('/search-products', [ProductController::class, 'searchProducts'])->name('search.products');
+
 
 
 

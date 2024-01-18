@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('Nom');
             $table->string('Description');
             $table->integer('quantite');
+            $table->string('image')->nullable();
             $table->integer('Prix');
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
