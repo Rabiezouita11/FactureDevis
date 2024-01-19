@@ -350,8 +350,13 @@
                         <label for="currentProductImage">Image actuelle:</label>
                         <br>
                       <center>
-                      <img src="{{ asset('storage/' . $Produit->image) }}" alt="{{ $Produit->Nom }}" style="width: 150px; height: 150px;" class="rounded-full object-cover">
-                      </center> 
+                      <center>
+        @if(isset($Produit) && $Produit)
+            <img src="{{ asset('storage/' . $Produit->image) }}" alt="{{ $Produit->Nom }}" style="width: 150px; height: 150px;" class="rounded-full object-cover">
+        @else
+            <p>No product image available</p>
+        @endif
+    </center>                       </center> 
                     </div>
                     <div class="form-group">
     <label for="editProductImage">Image:</label>
