@@ -2,20 +2,24 @@
 
 namespace App\Http\Controllers;
 use PDF;
-
+use App\Models\Factures;
+use App\Models\UserProduct;
 use Illuminate\Http\Request;
 
 class PdfController extends Controller
 {
-    public function generatePDF()
+    public function generatePDF($facture_id)
     {
-        // Retrieve client data from the database
-       
+        // Retrieve facture data
+        $facture = Factures::with('user')->find($facture_id);
 
-        // Retrieve purchase data related to the client
-       
+        // Retrieve user products for the given facture
+        $userProducts = UserProduct::with('product')->where('facture_id', $facture_id)->get();
 
-        // Generate PDF
-        return view('pdf.invoice');
+        // Pass the data to your PDF generation logic
+        // ...
+
+        // For example, you can return a view with the data
+        return view('pdf.invoice', compact('facture', 'userProducts'));
     }
 }

@@ -119,7 +119,7 @@ Invoice Area
                                 <div class="invoice-left">
                                     <b>Invoiced To:</b>
                                     <address>
-                                        Alex Farnandes <br>
+                                    {{ $facture->user->name }}<br>
                                         450 E 96th St, Indianapolis, WRHX+8Q <br>
                                         IN 46240, United States <br>
                                     </address>
@@ -148,34 +148,17 @@ Invoice Area
                                 </tr>
                             </thead>
                             <tbody>
+                            @foreach($userProducts as $key => $userProduct)
                                 <tr>
-                                    <td>01</td>
-                                    <td>Easy Chicken Masala</td>
-                                    <td>$25.00</td>
-                                    <td>1</td>
-                                    <td>$25.00</td>
+                                    <td>{{ $userProduct->product->id }}</td>
+                                    <td>{{ $userProduct->product->Nom }}</td>
+                                    <td>{{ number_format($userProduct->product->Prix, 2) }}TND</td>
+                                    <td>{{ $userProduct->quantite }}</td>
+                                    <td>{{ $userProduct->prix_totale }}TND</td>
                                 </tr>
-                                <tr>
-                                    <td>02</td>
-                                    <td>Boiled Organic Egg</td>
-                                    <td>$10.00</td>
-                                    <td>3</td>
-                                    <td>$20.00</td>
-                                </tr>
-                                <tr>
-                                    <td>03</td>
-                                    <td>Grilled Smoked Chicken</td>
-                                    <td>$100.00</td>
-                                    <td>2</td>
-                                    <td>$200.00</td>
-                                </tr>
-                                <tr>
-                                    <td>04</td>
-                                    <td>Party Platter Wings</td>
-                                    <td>$150.00</td>
-                                    <td>1</td>
-                                    <td>$150.00</td>
-                                </tr>
+                                @endforeach
+
+                           
                             </tbody>
                         </table>
                         <div class="row justify-content-between">
@@ -192,15 +175,15 @@ Invoice Area
                                 <table class="total-table">
                                     <tr>
                                         <th>Sub Total:</th>
-                                        <td>$405.00</td>
+                                        <td>{{ number_format($facture->prix_hors_taxe, 2) }}TND</td>
                                     </tr>
                                     <tr>
-                                        <th>Tax:</th>
-                                        <td>$00.00</td>
+                                        <th>TVA:</th>
+                                        <td>19 %</td>
                                     </tr>
                                     <tr>
                                         <th>Total:</th>
-                                        <td>$405.00</td>
+                                        <td>{{ number_format($facture->prix_avec_taxe, 2) }}TND</td>
                                     </tr>
                                 </table>
                             </div>

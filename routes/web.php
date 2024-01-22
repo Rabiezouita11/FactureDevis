@@ -27,7 +27,8 @@ Route::get('/Facture', [FactureController::class, 'showAllFacturesWithUsers'])->
 
 
 // pdf
-Route::get('/generate-pdf', [PdfController::class, 'generatePDF'])->name('generate.pdf');
+// Route::get('/generate-pdf', [PdfController::class, 'generatePDF'])->name('generate.pdf');
+Route::get('/generate-pdf_{facture_id}', [PdfController::class, 'generatePDF'])->name('generate.pdf');
 
 // home
 Route::get('/home', [HomeController::class, 'index'])->name('index');

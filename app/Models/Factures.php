@@ -22,4 +22,8 @@ class Factures extends Model
     {
         return $this->hasManyThrough(Product::class, UserProduct::class);
     }
+    public function userProducts()
+{
+    return $this->hasMany(UserProduct::class);
+}
 }
