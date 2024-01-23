@@ -105,37 +105,76 @@ Invoice Area
                             <div class="header-bottom">
                                 <div class="row align-items-center justify-content-between">
                                     <div class="col-auto">
-                                        <h1 class="big-title">Invoice</h1>
+                                        <h1 class="big-title">facture</h1>
                                     </div>
                                     <div class="col-auto">
-                                        <p class="invoice-number"><b>Invoice No: </b>#935648</p>
-                                        <p class="invoice-date"><b>Date: </b>22/03/2023</p>
-                                    </div>
+    <p class="invoice-number" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ $facture->id }}">
+        <b>Numéro de facture: </b>   {{ $facture->id }}
+    </p>
+    <p class="invoice-date"><b>Date: </b>{{ $facture->created_at->format('d/m/Y') }}</p>
+</div>
+
+
                                 </div>
                             </div>
                         </header>
                         <div class="row justify-content-between mb-30">
-                            <div class="col-auto">
-                                <div class="invoice-left">
-                                    <b>Invoiced To:</b>
-                                    <address>
-                                    {{ $facture->user->name }}<br>
-                                        450 E 96th St, Indianapolis, WRHX+8Q <br>
-                                        IN 46240, United States <br>
-                                    </address>
-                                </div>
-                            </div>
-                            <div class="col-auto">
-                                <div class="invoice-right">
-                                    <b>Pay To:</b>
-                                    <address>
-                                        Payment Info: <br>
-                                        Account : 1234 5678 9012 <br>
-                                        A/C Name : Alex Farnandes <br>
-                                        Emil : info@invar.com
-                                    </address>
-                                </div>
-                            </div>
+                        <div class="col-auto">
+    <div class="invoice-left">
+        <b>Facturé à</b>
+        <address>
+            <p><strong>{{ $facture->user->name }}</strong></p>
+            <p>{{ $facture->user->email }}</p>
+            <p>450 E 96th St, Indianapolis, WRHX+8Q</p>
+            <p>IN 46240, United States</p>
+        </address>
+    </div>
+</div>
+<style>
+    <style>
+    /* Additional styles for better readability and design */
+    .invoice-left {
+        font-size: 16px; /* Adjust the font size as needed */
+    }
+
+    .invoice-left address p {
+        margin-bottom: 5px; /* Adjust the spacing between paragraphs */
+    }
+</style>
+
+</style>
+                           <!-- Your other HTML code -->
+
+<div class="col-auto">
+    <div class="invoice-right">
+        <b>À payer à :</b>
+        <address>
+            <p><strong>Informations de paiement</strong></p>
+            <p><strong>Nom :</strong> Nahali Mondher</p>
+
+            <p><strong>Btscasbella :</strong> {{ $facture->Btscasbella }}</p>
+            <p><strong>RipAmanBank :</strong> {{ $facture->RipAmanBank }}</p>
+            <p><strong>RipBts :</strong> {{ $facture->RipBts }}</p>
+            <p><strong>Mf :</strong> {{ $facture->Mf }}</p>
+            <p><strong>Téléphone :</strong> {{ $facture->telephone }}</p>
+            <p><strong>Email :</strong> {{ $facture->email }}</p>
+        </address>
+    </div>
+</div>
+
+<style>
+    /* Additional styles for better readability and design */
+    .invoice-right {
+        font-size: 15px; /* Adjust the font size as needed */
+    }
+
+    .invoice-right address p {
+        margin-bottom: 5px; /* Adjust the spacing between paragraphs */
+    }
+</style>
+
+<!-- Your other HTML code -->
+
                         </div>
                         <table class="invoice-table td-big">
                             <thead>
