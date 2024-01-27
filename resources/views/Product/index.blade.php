@@ -359,6 +359,7 @@
     </center>                       </center> 
                     </div>
                     <div class="form-group">
+                    
     <label for="editProductImage">Image:</label>
     <input type="file" class="form-control" id="editProductImage" name="editProductImage">
 </div>
