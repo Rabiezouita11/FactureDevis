@@ -95,17 +95,24 @@ Invoice Area
                                     <path d="M0 0V100H304.237L387 0H0Z" fill="#EE1C25" />
                                 </svg>
                             </div>
-                            <div class="row justify-content-end">
-                                <div class="col-auto">
-                                    <div class="header-logo">
-                                        <a href="index.html"><img src="assetspdf/img/logo-white.svg" alt="Invar"></a>
-                                    </div>
-                                </div>
-                            </div>
+                            <div class="container-fluid">
+    <div class="row">
+        <div class="col position-relative">
+            <h1 style="color: red; font-weight: bold; font-size: 50px; position: absolute; top: -25px; left: 0;">Société Casa Bella</h1>
+        </div>
+        <div class="col-auto">
+            <div class="header-logo">
+                <a href="index.html"><img src="assetspdf/img/logo-white.svg" alt="Invar"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
                             <div class="header-bottom">
                                 <div class="row align-items-center justify-content-between">
                                     <div class="col-auto">
-                                        <h1 class="big-title">facture</h1>
+                                        <h1 class="big-title">Facture</h1>
                                     </div>
                                     <div class="col-auto">
     <p class="invoice-number" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ $facture->id }}">
@@ -125,8 +132,11 @@ Invoice Area
         <address>
             <p><strong>{{ $facture->user->name }}</strong></p>
             <p>{{ $facture->user->email }}</p>
-            <p>450 E 96th St, Indianapolis, WRHX+8Q</p>
-            <p>IN 46240, United States</p>
+            <!-- <p><strong>Mf :</strong>1847960EMN/000</p>
+            <p><strong>Adresse :</strong>Chotrana</p> -->
+
+            <!-- <p>450 E 96th St, Indianapolis, WRHX+8Q</p>
+            <p>IN 46240, United States</p> -->
         </address>
     </div>
 </div>
@@ -174,16 +184,21 @@ Invoice Area
 </style>
 
 <!-- Your other HTML code -->
-
+<style>
+    .invoice-table tbody td {
+        font-size: 14px; /* Adjust the font size as needed */
+        font-weight: bold; /* Make the text bold */
+    }
+</style>
                         </div>
                         <table class="invoice-table td-big">
                             <thead>
                                 <tr>
-                                    <th>SL</th>
-                                    <th>Item Description</th>
-                                    <th>Price</th>
-                                    <th>Qty</th>
-                                    <th>Total</th>
+                                    <th>ID</th>
+                                    <th>Désignations</th>
+                                    <th>PUH</th>
+                                    <th>Qte</th>
+                                    <th>Total HT</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -191,9 +206,9 @@ Invoice Area
                                 <tr>
                                     <td>{{ $userProduct->product->id }}</td>
                                     <td>{{ $userProduct->product->Nom }}</td>
-                                    <td>{{ number_format($userProduct->product->Prix, 2) }}TND</td>
+                                    <td>{{ number_format($userProduct->product->Prix, 3, '.', '.') }}TND</td>
                                     <td>{{ $userProduct->quantite }}</td>
-                                    <td>{{ $userProduct->prix_totale }}TND</td>
+                                    <td>{{ number_format($userProduct->prix_totale, 3, '.', '.') }}TND</td>
                                 </tr>
                                 @endforeach
 
@@ -201,32 +216,36 @@ Invoice Area
                             </tbody>
                         </table>
                         <div class="row justify-content-between">
-                            <div class="col-auto">
-                                <div class="invoice-left">
-                                    <b>Terms & Conditions</b>
-                                    <p class="mb-0">Authoritatively envisioned business <br> action items through parallel.</p>
-                                </div>
-                                <div class="invoice-note2 mt-25">
-                                    <p class="mb-0"><b>NOTE:</b> This is computer generated receipt and <br> does not require physical signature.</p>
-                                </div>
-                            </div>
-                            <div class="col-auto">
-                                <table class="total-table">
-                                    <tr>
-                                        <th>Sub Total:</th>
-                                        <td>{{ number_format($facture->prix_hors_taxe, 2) }}TND</td>
-                                    </tr>
-                                    <tr>
-                                        <th>TVA:</th>
-                                        <td>19 %</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Total:</th>
-                                        <td>{{ number_format($facture->prix_avec_taxe, 2) }}TND</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
+    <div class="col-auto">
+        <div class="invoice-left">
+            <br>
+            <img src="singature.jpeg" alt="Terms & Conditions" style="max-width: 200px; height: auto; margin-left: 115px;">
+        </div>
+       
+    </div>
+    <div class="col-auto">
+        <table class="total-table">
+            <tr>
+                <th>Totale HT</th>
+                <td>{{ number_format($facture->prix_hors_taxe, 3, '.', '.') }} TND</td>
+            </tr>
+            <tr>
+                <th>TVA 19%:</th>
+                <td>{{ number_format($facture->TVA, 3, '.', '.') }} TND</td>
+            </tr>
+            </tr>
+            <tr>
+                <th>Timbre:</th>
+                <td>1 TND</td>
+            </tr>
+            <tr>
+                <th>Total TTC:</th>
+                <td>{{ number_format($facture->prix_avec_taxe, 3, '.', '.') }} TND</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
                         <div class="body-shape1">
                             <img src="assetspdf/img/template/restaurant_block.svg" alt="shape">
                         </div>

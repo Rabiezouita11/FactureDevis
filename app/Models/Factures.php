@@ -9,7 +9,7 @@ class Factures extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'NomSoicety', 'adresse', 'email', 'Btscasbella', 'RipAmanBank', 'RipBts', 'Mf', 'telephone', 'user_id', 'prix_hors_taxe', 'prix_avec_taxe'
+        'NomSoicety', 'adresse', 'email', 'Btscasbella', 'RipAmanBank', 'RipBts', 'Mf', 'telephone', 'user_id', 'prix_hors_taxe', 'prix_avec_taxe','TVA'
     ];
 
    

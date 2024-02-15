@@ -23,7 +23,7 @@ class ProductController extends Controller
             'productName' => 'required|string|max:255',
             'productDescription' => 'required|string',
             'productQuantity' => 'required|integer',
-            'productPrice' => 'required|integer',
+            'productPrice' => 'required|numeric|regex:/^\d*(\.\d{1,3})?$/',
             'productCategory' => 'required|exists:categories,id',
             'productImage' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Add image validation rules
         ]);

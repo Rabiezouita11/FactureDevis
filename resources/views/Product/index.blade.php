@@ -256,12 +256,12 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="productPrice">Prix:</label>
-                        <input type="number" class="form-control @error('productPrice') is-invalid @enderror" id="productPrice" name="productPrice" required value="{{ old('productPrice') }}">
-                        @error('productPrice')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+    <label for="productPrice">Prix:</label>
+    <input type="text" class="form-control @error('productPrice') is-invalid @enderror" id="productPrice" name="productPrice" required value="{{ old('productPrice') }}">
+    @error('productPrice')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
                     <div class="form-group">
         <label for="productImage">Image:</label>
         <input type="file" class="form-control" id="productImage" name="productImage">

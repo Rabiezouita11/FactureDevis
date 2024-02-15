@@ -41,7 +41,7 @@ class FactureController extends Controller
         // Validate the request data (add more validation rules as needed)
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            // 'email' => 'required|email|max:255',
             'products' => 'required|array',
             'products.*' => 'exists:products,id',
             'quantities' => 'required|array',
@@ -65,34 +65,42 @@ class FactureController extends Controller
         ]);
     
         // Initialize total prices
-        $totalHorsTaxe = 0; // Total price without tax
-        $totalAvecTaxe = 0; // Total price with tax
-    
-        // Calculate total price for each product and attach to the user with additional pivot data
-        foreach ($selectedProducts as $key => $productId) {
-            $product = Product::find($productId);
-            $quantity = $quantities[$key];
-            $totalHorsTaxe += $product->Prix * $quantity;
-    
-            // Calculate total price with tax
-            $totalAvecTaxe += ($product->Prix * (1 + $taxRate)) * $quantity;
-    
-            // Attach the product to the user with facture_id
-            $user->products()->attach(
-                $productId,
-                [
-                    'facture_id' => $facture->id,
-                    'quantite' => $quantity,
-                    'prix_totale' => $product->Prix * $quantity,
-                ]
-            );
-        }
-    
-        // Update the facture with total prices
-        $facture->update([
-            'prix_hors_taxe' => $totalHorsTaxe,
-            'prix_avec_taxe' => $totalAvecTaxe,
-        ]);
+    // Initialize total prices
+$totalHorsTaxe = 0; // Total price without tax
+$totalAvecTaxe = 0; // Total price with tax
+
+// Calculate total price for each product and attach to the user with additional pivot data
+foreach ($selectedProducts as $key => $productId) {
+    $product = Product::find($productId);
+    $quantity = $quantities[$key];
+    $prixTotale = $product->Prix * $quantity; // Calculate total price including tax
+
+    // Update total prices
+    $totalHorsTaxe += $prixTotale; // Add total price including tax
+    $totalAvecTaxe += $prixTotale * (1 + $taxRate); // Add total price with tax
+
+    // Attach the product to the user with facture_id
+    $user->products()->attach(
+        $productId,
+        [
+            'facture_id' => $facture->id,
+            'quantite' => $quantity,
+            'prix_totale' => $prixTotale, // Save total price including tax
+        ]
+    );
+}
+
+// Calculate the tax amount
+$tvaAmount = $totalAvecTaxe - $totalHorsTaxe;
+$totalAvecTaxe += 1;
+
+// Update the facture with total prices
+$facture->update([
+    'prix_hors_taxe' => $totalHorsTaxe,
+    'prix_avec_taxe' => $totalAvecTaxe,
+    'TVA' => $tvaAmount,
+]);
+
     
         // Return a success response
         return redirect()->route('Facture')->with('success', 'Facture ajoutée avec succès');

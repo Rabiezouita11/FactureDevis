@@ -195,7 +195,7 @@
 
     <div class="form-group">
         <label for="email">Email du client :</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="Entrez l'email" required>
+        <input type="email" class="form-control" id="email" name="email" placeholder="Entrez l'email" >
     </div>
 
                     <!-- Product Selection -->

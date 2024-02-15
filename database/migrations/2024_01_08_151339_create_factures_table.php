@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('factures', function (Blueprint $table) {
             $table->id();
-            $table->string('NomSoicety');
+            $table->string('NomSoicety')->default('Société Casa Bella');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('adresse');

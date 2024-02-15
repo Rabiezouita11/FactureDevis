@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('Description');
             $table->integer('quantite');
             $table->string('image')->nullable();
-            $table->integer('Prix');
+            $table->decimal('Prix', 8, 3); // Change data type to decimal with precision and scale
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();
