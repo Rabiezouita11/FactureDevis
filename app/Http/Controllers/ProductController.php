@@ -24,7 +24,7 @@ class ProductController extends Controller
             'productDescription' => 'required|string',
             'productQuantity' => 'required|integer',
             'productPrice' => 'required|numeric|regex:/^\d*(\.\d{1,3})?$/',
-            'productCategory' => 'required|exists:categories,id',
+            // 'productCategory' => 'required|exists:categories,id',
             'productImage' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Add image validation rules
         ]);
     
@@ -43,7 +43,7 @@ class ProductController extends Controller
             'Description' => $request->input('productDescription'),
             'quantite' => $request->input('productQuantity'),
             'Prix' => $request->input('productPrice'),
-            'category_id' => $request->input('productCategory'),
+            // 'category_id' => $request->input('productCategory'),
             'image' => $imagePath, // Save image path to the 'image' attribute
         ]);
     
@@ -60,8 +60,9 @@ class ProductController extends Controller
             'editProductName' => 'required|string|max:255',
             'editProductDescription' => 'required|string',
             'editProductQuantity' => 'required|integer|min:0',
-            'editProductPrice' => 'required|numeric|min:0',
-            'editProductCategory' => 'required|exists:categories,id',
+            'editProductPrice' => 'required|numeric|regex:/^\d*(\.\d{1,3})?$/',
+
+            // 'editProductCategory' => 'required|exists:categories,id',
             'editProductImage' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Add image validation
         ]);
     
@@ -76,7 +77,7 @@ class ProductController extends Controller
             'Description' => $request->input('editProductDescription'),
             'quantite' => $request->input('editProductQuantity'),
             'Prix' => $request->input('editProductPrice'),
-            'category_id' => $request->input('editProductCategory'),
+            // 'category_id' => $request->input('editProductCategory'),
         ];
     
         // Update image if provided

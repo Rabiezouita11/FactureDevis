@@ -58,44 +58,45 @@
   </div>
   @endif
 </center>
-    <div class="container mx-auto px-2 min-h-[calc(100vh-138px)]  relative pb-14 ">         
-        <div class="grid md:grid-cols-12 lg:grid-cols-12 xl:grid-cols-12 gap-4 mb-4">
-          
-            <div class="sm:col-span-12  md:col-span-12 lg:col-span-6 xl:col-span-12 ">
+<div class="container mx-auto px-2 min-h-[calc(100vh-138px)] relative pb-14">
+    <div class="grid md:grid-cols-12 lg:grid-cols-12 xl:grid-cols-12 gap-4 mb-4">
+        <div class="sm:col-span-12 md:col-span-12 lg:col-span-6 xl:col-span-12">
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title">List Facture</h4>
                     </div><!--end card-header-->
                     <div class="card-body">
                         <!-- component -->
-                        <div class="relative overflow-x-auto  sm:rounded">
- <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border border-collapse border-gray-300">
-    <thead class="justify-between">
-        <tr class="bg-gray-800 dark:bg-slate-700">
+                        <div class="relative overflow-x-auto sm:rounded">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border border-collapse border-gray-300">
+                     <thead class="justify-between">
+                 <tr class="bg-gray-800 dark:bg-slate-700">
             <th scope="col" class="px-5 py-3 text-slate-200 border-b border-gray-300">
-                Id
-            </th>
-            <th scope="col" class="px-5 py-3 text-slate-200 border-b border-gray-300">
-                Nom Client 
-            </th>
-             <th scope="col" class="px-5 py-3 text-slate-200 border-b border-gray-300">
-             Adresse 
-            </th>
-              <th scope="col" class="px-5 py-3 text-slate-200 border-b border-gray-300">
-             Email   
+                <strong>Id</strong>
             </th>
             <th scope="col" class="px-5 py-3 text-slate-200 border-b border-gray-300">
-             Prix hors Taxe   
+                <strong>Nom Client</strong>
             </th>
             <th scope="col" class="px-5 py-3 text-slate-200 border-b border-gray-300">
-            Prix avec Taxe   
-   
+                <strong>Mf Client</strong>
             </th>
             <th scope="col" class="px-5 py-3 text-slate-200 border-b border-gray-300">
-                Date de création
+                <strong>Adresse</strong>
             </th>
             <th scope="col" class="px-5 py-3 text-slate-200 border-b border-gray-300">
-                Action
+                <strong>Email</strong>
+            </th>
+            <th scope="col" class="px-5 py-3 text-slate-200 border-b border-gray-300">
+                <strong>Prix hors Taxe</strong>
+            </th>
+            <th scope="col" class="px-5 py-3 text-slate-200 border-b border-gray-300">
+                <strong>Prix avec Taxe</strong>
+            </th>
+            <th scope="col" class="px-5 py-3 text-slate-200 border-b border-gray-300">
+                <strong>Date de création</strong>
+            </th>
+            <th scope="col" class="px-5 py-3 text-slate-200 border-b border-gray-300">
+                <strong>Action</strong>
             </th>
         </tr>
     </thead>
@@ -103,50 +104,63 @@
     <tbody class="bg-gray-200">
         @forelse($factures  as $facture)
             <tr class="bg-white dark:bg-slate-900/95">
-            <td class="border-b border-gray-300">
-                    <span class="text-center ml-2 font-medium">{{ $facture->id }}</span>
+                <td class="border-b border-gray-300 px-5 py-3">
+                    <span class="text-center font-medium text-lg">{{ $facture->id }}</span>
                 </td>
-                <td class="border-b border-gray-300">
-                    <span class="text-center ml-2 font-medium">{{ $facture->user_name }}</span>
+                <td class="border-b border-gray-300 px-5 py-3">
+                    <span class="text-center font-medium text-lg">{{ $facture->user_name }}</span>
                 </td>
-                <td class="border-b border-gray-300">
-                    <span class="text-center ml-2 font-medium">{{ $facture->adresse }}</span>
+                <td class="border-b border-gray-300 px-5 py-3">
+                    @if ($facture->Mf_Client === null)
+                        <span class="text-center font-medium text-lg">
+                            <!-- Icon for when the client does not have MF -->
+                            <i class="fas fa-times-circle text-red-500"></i>
+                        </span>
+                    @else
+                        <span class="text-center font-medium text-lg">{{ $facture->Mf_Client }}</span>
+                    @endif
                 </td>
-                <td class="border-b border-gray-300">
-                    <span class="text-center ml-2 font-medium">{{ $facture->user_email }}</span>
+                <td class="border-b border-gray-300 px-5 py-3">
+                    <span class="text-center font-medium text-lg">{{ $facture->adresse }}</span>
                 </td>
-                <td class="border-b border-gray-300">
-                    <span class="text-center ml-2 font-medium">{{ $facture->prix_hors_taxe  }}</span>
-                </td>
-                <td class="border-b border-gray-300">
-                    <span class="text-center ml-2 font-medium">{{ $facture->prix_avec_taxe    }}</span>
-                </td>
-                <td class="px-5 py-3 border-b border-gray-300">
-                    <span>{{ $facture->created_at->format('d/m/Y') }}</span>
-                </td>
-                <td class="px-5 py-3 border-b border-gray-300">
-                    <!-- Update Icon -->
+                <td class="border-b border-gray-300 px-5 py-3">
+    @if ($facture->user_email === null)
+        <span class="text-center font-medium text-lg">
+            <!-- Icon for when there is no email -->
+            <i class="fas fa-times-circle text-red-500"></i>
+        </span>
+    @else
+        <span class="text-center font-medium text-lg">{{ $facture->user_email }}</span>
+    @endif
+</td>
 
-                    <a href="#" class="text-green-500 hover:text-green-700 edit-category-btn" data-toggle="modal" data-target="#editCategoryModal" >
-                    <i class="fas fa-pencil-alt"></i>
-</a>
-
-                    <!-- Delete Icon -->
-                    <a href="#" class="text-red-500 hover:text-red-700 delete-category-btn" data-toggle="modal" data-target="#deleteCategoryModal" >
-    <i class="fas fa-trash"></i>
-</a>
+                <td class="border-b border-gray-300 px-5 py-3">
+                    <span class="text-center font-medium text-lg">{{ $facture->prix_hors_taxe }}</span>
+                </td>
+                <td class="border-b border-gray-300 px-5 py-3">
+                    <span class="text-center font-medium text-lg">{{ $facture->prix_avec_taxe }}</span>
+                </td>
+                <td class="border-b border-gray-300 px-5 py-3">
+                    <span class="text-center font-medium text-lg">{{ $facture->created_at->format('d/m/Y') }}</span>
+                </td>
+                <td class="border-b border-gray-300 px-5 py-3">
+                    <!-- View Details Icon -->
+                    <a href="http://localhost:8000/generate-pdf_{{$facture->id}}" class="text-green-500 hover:text-green-700">
+                        <i class="far fa-eye text-xl"></i>
+                    </a>
                 </td>
             </tr>
         @empty
-            <tr>
-                <td colspan="8" class="text-center py-4 text-gray-500 dark:text-gray-400 border-b border-gray-300">
-                <p>Aucune facture trouvée.</p>
+            <tr>    
+                <td colspan="9" class="text-center py-4 text-gray-500 dark:text-gray-400 border-b border-gray-300">
+                    <p>Aucune facture trouvée.</p>
                 </td>
             </tr>
         @endforelse
     </tbody>
    
 </table>
+
 
 <!-- Pagination Links -->
 <br>
@@ -189,14 +203,32 @@
                     @csrf
                     <!-- User Information -->
                     <div class="form-group">
+        <label for="clientType">Type de client :</label>
+        <select class="form-control" id="clientType" name="clientType" required>
+            <option value="particulier">Particulier</option>
+            <option value="entreprise">Entreprise</option>
+        </select>
+    </div>
+    <div id="entrepriseFields" style="display: none;">
+        <div class="form-group">
+            <label for="mf">Matricule Fiscal :</label>
+            <input type="text" class="form-control" id="mf" name="mf" placeholder="Entrez le matricule fiscal">
+        </div>
+    </div>
+                    <div class="form-group">
         <label for="name">Nom du client :</label>
-        <input type="text" class="form-control" id="name" name="name" placeholder="Entrez le nom" required>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Entrez le nom du client" required>
     </div>
 
     <div class="form-group">
         <label for="email">Email du client :</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="Entrez l'email" >
+        <input type="email" class="form-control" id="email" name="email" placeholder="Entrez l'email du client " >
     </div>
+    <div class="form-group">
+    <label for="email">Adresse du client :</label>
+    <input type="text" class="form-control" id="adresse" name="adresse" placeholder="Entrez l'adresse du client" >
+</div>
+
 
                     <!-- Product Selection -->
                     <div class="form-group" id="productFieldsContainer">
@@ -232,6 +264,25 @@
 
 <!-- ... (remaining HTML code) ... -->
 
+<!-- Add Facture Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Two or more products cannot be selected multiple times. Please remove duplicate selections.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     $(document).ready(function () {
@@ -279,14 +330,20 @@
         }
 
         // Event listener for form submission
-        $('form').submit(function () {
+        $('form').submit(function (event) {
             var selectedProductOptions = $('select[name="products[]"] option:selected');
+
+            // Reset selectedProducts array before checking for duplicates
+            selectedProducts = [];
 
             // Check for duplicate selections
             selectedProductOptions.each(function () {
                 var productId = $(this).val();
                 if (selectedProducts.includes(productId)) {
-                    alert('Product ' + $(this).text() + ' is already selected.');
+                    // Show error modal if duplicate selections found
+                    $('#errorModal').modal('show');
+                    event.preventDefault(); // Prevent form submission
+                    return false;
                 } else {
                     selectedProducts.push(productId);
                 }
@@ -295,6 +352,20 @@
     });
 </script>
 
+<script>
+    // Ajoutez un écouteur d'événement pour détecter les changements dans le type de client
+    document.getElementById("clientType").addEventListener("change", function() {
+        var clientType = this.value; // Récupérer la valeur sélectionnée du type de client
+        var entrepriseFields = document.getElementById("entrepriseFields"); // Sélectionner le bloc des champs entreprise
+
+        // Si le type de client est "entreprise", afficher les champs pour l'entreprise, sinon masquer
+        if (clientType === "entreprise") {
+            entrepriseFields.style.display = "block"; // Afficher les champs pour l'entreprise
+        } else {
+            entrepriseFields.style.display = "none"; // Masquer les champs pour l'entreprise
+        }
+    });
+</script>
 @endsection
 
 

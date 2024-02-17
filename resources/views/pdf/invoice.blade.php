@@ -132,8 +132,15 @@ Invoice Area
         <address>
             <p><strong>{{ $facture->user->name }}</strong></p>
             <p>{{ $facture->user->email }}</p>
-            <!-- <p><strong>Mf :</strong>1847960EMN/000</p>
-            <p><strong>Adresse :</strong>Chotrana</p> -->
+            @if ($facture->Mf_Client !== null)
+    <p><strong>Mf :</strong>{{ $facture->Mf_Client }}</p>
+@endif
+
+@if ($facture->adresse !== null)
+<p><strong>Adresse :</strong>{{ $facture->adresse }}</p>
+
+@endif
+
 
             <!-- <p>450 E 96th St, Indianapolis, WRHX+8Q</p>
             <p>IN 46240, United States</p> -->

@@ -203,7 +203,7 @@ Facturation/Devis
                 alt="user photo"
               />
               <span class="ml-2 hidden text-left xl:block">
-                <span class="block font-medium text-gray-400">Maria Gibson</span>
+                <span class="block font-medium text-gray-400">Nahali Mondher</span>
                 <span class="-mt-1 block text-sm font-medium text-gray-500"
                   >Admin</span
                 >

@@ -41,7 +41,9 @@ class FactureController extends Controller
         // Validate the request data (add more validation rules as needed)
         $request->validate([
             'name' => 'required|string|max:255',
-            // 'email' => 'required|email|max:255',
+            'email' => 'nullable|email|max:255',
+            'mf' => 'nullable|string', // Define the validation rule for 'mf' field
+
             'products' => 'required|array',
             'products.*' => 'exists:products,id',
             'quantities' => 'required|array',
@@ -57,11 +59,15 @@ class FactureController extends Controller
         // Get the selected product IDs and quantities from the request
         $selectedProducts = $request->input('products');
         $quantities = $request->input('quantities');
-    
+        $adresse = $request->input('adresse');
+
+         $mf = $request->input('mf');
         // Create a new facture for the user
         $facture = Factures::create([
             'user_id' => $user->id,
-            'details' => 'Test Facture Details', // You can customize this as needed
+            'Mf_Client' => $mf !== null ? $mf : null, // Use a ternary operator to conditionally assign the value
+
+            'adresse' =>  $adresse , // You can customize this as needed
         ]);
     
         // Initialize total prices

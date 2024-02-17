@@ -106,9 +106,9 @@
             <th scope="col" class="px-6 py-4 text-lg font-semibold border-r border-gray-300">
     Image
 </th>
-            <th scope="col" class="px-6 py-4 text-lg font-semibold border-r border-gray-300">
+            <!-- <th scope="col" class="px-6 py-4 text-lg font-semibold border-r border-gray-300">
                 Catégorie
-            </th>
+            </th> -->
             <th scope="col" class="px-6 py-4 text-lg font-semibold border-r border-gray-300">
                 Date de création
             </th>
@@ -151,12 +151,6 @@
 </td>
 
 
-<td class="px-6 py-4 text-lg border-r border-gray-300">
-    <span class="flex items-center">
-        <i class="fas fa-folder mr-2"></i> <!-- Adjust the icon class accordingly -->
-        {{ $Produit->category->Nom }}
-    </span>
-</td>
 
 <td class="px-6 py-4 text-lg border-r border-gray-300">
     <span class="flex items-center">
@@ -179,7 +173,7 @@
    data-product-description="{{ $Produit->Description }}" 
    data-product-quantity="{{ $Produit->quantite }}" 
    data-product-price="{{ $Produit->Prix }}" 
-   data-product-category="{{ $Produit->category->id }}">
+  >
    <i class="fas fa-pencil-alt"></i>
 </a>
 
@@ -269,10 +263,9 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="productCategory">Catégorie:</label>
                         <select class="form-control @error('productCategory') is-invalid @enderror" id="productCategory" name="productCategory" required>
-                            <!-- You may populate the dropdown options with category data -->
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->Nom }}</option>
                             @endforeach
@@ -280,7 +273,7 @@
                         @error('productCategory')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div> -->
                     <button type="submit" class="btn btn-primary">Ajouter</button>
                 </form>
             </div>
@@ -344,7 +337,7 @@
 
                     <div class="form-group">
                         <label for="editProductPrice">Prix:</label>
-                        <input type="number" class="form-control" id="editProductPrice" name="editProductPrice" required>
+                        <input type="text" class="form-control" id="editProductPrice" name="editProductPrice" required>
                     </div>
                     <div class="form-group">
                         <label for="currentProductImage">Image actuelle:</label>
@@ -364,15 +357,14 @@
     <input type="file" class="form-control" id="editProductImage" name="editProductImage">
 </div>
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="editProductCategory">Catégorie:</label>
                         <select class="form-control" id="editProductCategory" name="editProductCategory" required>
-                            <!-- You may populate the dropdown options with category data -->
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->Nom }}</option>
                             @endforeach
                         </select>
-                    </div>
+                    </div> -->
 
                    
 
